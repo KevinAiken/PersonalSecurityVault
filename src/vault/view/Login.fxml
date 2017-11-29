@@ -11,19 +11,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vault.view.LoginController">
    <children>
-      <ButtonBar buttonMinWidth="100.0" layoutX="86.0" layoutY="146.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="50.0">
-        <buttons>
-          <Button mnemonicParsing="false" text="Login" />
-            <Button mnemonicParsing="false" text="Cancel" />
-        </buttons>
-      </ButtonBar>
-      <Label alignment="CENTER" layoutX="336.0" layoutY="43.0" text="Personal Security Vault" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="40.0">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Label>
       <GridPane layoutX="250.0" layoutY="161.0" minWidth="300.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="73.0" />
@@ -34,11 +23,22 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" />
+            <TextField fx:id="username" GridPane.columnIndex="1" />
+            <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Username" />
             <Label text="Password" GridPane.rowIndex="1" />
          </children>
       </GridPane>
+      <ButtonBar buttonMinWidth="100.0" layoutX="86.0" layoutY="146.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="35.0" AnchorPane.rightAnchor="50.0">
+        <buttons>
+          <Button mnemonicParsing="false" onAction="#handleLogin" text="Login" />
+            <Button cancelButton="true" mnemonicParsing="false" text="Cancel" />
+        </buttons>
+      </ButtonBar>
+      <Label alignment="CENTER" layoutX="336.0" layoutY="43.0" text="Personal Security Vault" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="40.0">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
