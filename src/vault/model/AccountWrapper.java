@@ -11,7 +11,7 @@ public class AccountWrapper {
     private List<Account> accounts;
 
     @XmlElement(name = "account")
-    public List<Account> getPersons() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 

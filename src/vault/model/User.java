@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /** 
  * Contains the username 
@@ -17,6 +18,8 @@ public class User {
 	private Password userPass;
 	private byte[] passHash;
 	private byte[] passSalt;
+	private byte[] encryptSalt;
+	private String password;
 	
 	
 	/** 
@@ -32,6 +35,8 @@ public class User {
 		this.userPass = pass;
 		this.passHash = userPass.getHash();
 		this.passSalt = userPass.getSalt();
+		this.encryptSalt = userPass.getEncryptSalt();
+		this.password = userPass.getPassword();
 	}
 	
 	public byte[] getPassHash() {
@@ -48,6 +53,18 @@ public class User {
 		return this.username;
 	}
 	
+	public byte[] getEncryptSalt() {
+		return encryptSalt;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	@XmlTransient
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 	@XmlElement
 	public void setUsername(String userName) {
 		this.username = userName;
@@ -61,6 +78,11 @@ public class User {
 	@XmlElement
 	public void setPassSalt(byte[] passSalt) {
 		this.passSalt = passSalt;
+	}
+	
+	@XmlElement
+	public void setEncryptSalt(byte[] encryptSalt) {
+		this.encryptSalt = encryptSalt;
 	}
 	/**
 	 * Determines if login is valid

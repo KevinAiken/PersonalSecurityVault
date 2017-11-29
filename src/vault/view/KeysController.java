@@ -1,9 +1,11 @@
 package vault.view;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import vault.MainApp;
 import vault.model.Account;
 import vault.model.Key;
@@ -84,12 +86,14 @@ public class KeysController {
             keyValueLabel.setText(key.getKeyValue());
             keyPairValueLabel.setText(key.getKeyPairValue());
             notesLabel.setText(key.getNotes());
+            lengthLabel.setText(key.getKeyLength());
         } else {
             // account is null, remove all the text.
             keyNameLabel.setText("");
             keyTypeLabel.setText("");
             keyValueLabel.setText("");
             keyPairValueLabel.setText("");
+            lengthLabel.setText("");
             notesLabel.setText("");         
         }
     }
@@ -101,6 +105,7 @@ public class KeysController {
     private void handleDeleteKey() {
         int selectedIndex = keyTable.getSelectionModel().getSelectedIndex();
         keyTable.getItems().remove(selectedIndex);
+        mainApp.encryptKeyData();
     }
     
     @FXML
@@ -110,7 +115,12 @@ public class KeysController {
     
     @FXML 
     private void handleNewKey() {
-    	System.out.println("Not implemented yet");
+    	Key tempKey = new Key();
+    	boolean okClicked = mainApp.showKeyEditDialog(tempKey);
+    	if(okClicked) {
+    		mainApp.getKeyData().add(tempKey);
+    		mainApp.encryptKeyData();
+    	}
     }
     
     @FXML
@@ -120,6 +130,32 @@ public class KeysController {
     
     @FXML 
     private void editKey() {
-    	System.out.println("Not implemented yet");
+    	Key selectedKey = keyTable.getSelectionModel().getSelectedItem();
+    	if (selectedKey != null) {
+    		boolean okClicked = mainApp.showKeyEditDialog(selectedKey);
+    		if (okClicked) {
+    			showKeyDetails(selectedKey);
+    			mainApp.encryptKeyData();
+    		}
+    	} else {
+    		// no selection
+    		Alert alert = new Alert(AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Key Selected");
+            alert.setContentText("Please select a key in the table.");
+
+            alert.showAndWait();
+    	}
+    }
+    
+    @FXML
+    private void generateKey() {
+    	Key tempKey = new Key();
+    	boolean okClicked = mainApp.showKeyGenerateDialog(tempKey);
+    	if(okClicked) {
+    		mainApp.getKeyData().add(tempKey);
+    		mainApp.encryptKeyData();
+    	}
     }
 }

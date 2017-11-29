@@ -25,6 +25,8 @@ public class Password {
 	
 	private final byte[] hash;
 	private final byte[] salt;
+	private final byte[] encryptSalt;
+	private String password;
 	
 	// Highest number of iterations that did not
 	// result in significant login lag
@@ -37,7 +39,8 @@ public class Password {
 	public Password(String password) {
 		this.salt = generateSalt();
 		this.hash = generateSecureHash(password, salt);
-		password = null;
+		this.encryptSalt = generateSalt();
+		this.password = password;
 	}
 	
 	/**
@@ -46,7 +49,9 @@ public class Password {
 	public Password(String password, byte[] salt) {
 		this.salt = salt;
 		this.hash = generateSecureHash(password, this.salt);
-		password = null;
+		this.password = password;
+		encryptSalt = null;
+		
 	}
 	
 	/**
@@ -55,6 +60,8 @@ public class Password {
 	public Password(byte[] hash, byte[] salt) {
 		this.salt = salt;
 		this.hash = hash;
+		this.encryptSalt = null;
+		this.password = null;
 	}
 	
 	public byte[] getSalt() {
@@ -63,6 +70,18 @@ public class Password {
 	
 	public byte[] getHash() {
 		return hash;
+	}
+	
+	public byte[] getEncryptSalt() {
+		return encryptSalt;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public boolean compare(String passAttempt) {
@@ -73,7 +92,7 @@ public class Password {
 		}
 	}
 	
-	private static byte[] generateSecureHash(String password, byte[] salt) {
+	public static byte[] generateSecureHash(String password, byte[] salt) {
 		char[] passwordChars = password.toCharArray();
 		password = null;
 		

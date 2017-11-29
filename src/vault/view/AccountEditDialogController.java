@@ -1,5 +1,8 @@
 package vault.view;
 
+import java.security.SecureRandom;
+import java.util.Arrays;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -69,7 +72,24 @@ public class AccountEditDialogController {
     public boolean isOkClicked() {
         return okClicked;
     }
-
+    
+    @FXML
+    private void handleGenerate() {
+    	SecureRandom sr = new SecureRandom();
+		byte[] pass = new byte[16];
+		sr.nextBytes(pass);
+	
+		String generatedPass = "";
+		int i;
+		for(i = 0; i < pass.length; i++) {
+			generatedPass += (Byte.toString(pass[i]));
+			
+		}
+		
+		generatedPass = generatedPass.substring(0, 11);
+		
+    	passwordField.setText(generatedPass);
+    }
     /**
      * Called when the user clicks ok.
      */

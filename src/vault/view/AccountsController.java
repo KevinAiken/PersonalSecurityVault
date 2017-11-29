@@ -98,6 +98,7 @@ public class AccountsController {
     private void handleDeleteAccount() {
         int selectedIndex = accountTable.getSelectionModel().getSelectedIndex();
         accountTable.getItems().remove(selectedIndex);
+        mainApp.encryptAccountData();
     }
     
     @FXML
@@ -116,6 +117,7 @@ public class AccountsController {
         if (okClicked) {
             mainApp.getAccountData().add(tempAccount);
             // ENCRYPT ALL DATA HERE
+            mainApp.encryptAccountData();
         }
     }
 
@@ -131,6 +133,7 @@ public class AccountsController {
             if (okClicked) {
                 showAccountDetails(selectedAccount);
                 //MARSHALL AND ENCRYPT HERE
+                mainApp.encryptAccountData();
             }
 
         } else {
@@ -138,8 +141,8 @@ public class AccountsController {
             Alert alert = new Alert(AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
             alert.setTitle("No Selection");
-            alert.setHeaderText("No Person Selected");
-            alert.setContentText("Please select a person in the table.");
+            alert.setHeaderText("No Account Selected");
+            alert.setContentText("Please select an account in the table.");
 
             alert.showAndWait();
         }

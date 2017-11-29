@@ -39,7 +39,7 @@ public class Key {
     public void setKeyName(String keyName) {
         this.keyName.set(keyName);
     }
-
+    
     public String getKeyValue() {
         return keyValue.get();
     }
@@ -70,6 +70,14 @@ public class Key {
     
     public String getKeyPairValue() {
     	return keyPairValue.get();
+    }
+    
+    public void setKeyLength(String keyLength) {
+    	this.keyLength.set(keyLength);
+    }
+    
+    public String getKeyLength() {
+    	return this.keyLength.get();
     }
     
     public StringProperty keyNameProperty() {
