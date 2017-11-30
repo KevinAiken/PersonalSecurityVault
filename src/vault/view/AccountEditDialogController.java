@@ -1,18 +1,16 @@
 package vault.view;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
+
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import vault.model.Account;
 
 
 /**
- * Dialog to edit details of a person.
+ * Dialog to edit details of an Account
  */
 public class AccountEditDialogController {
 
@@ -50,9 +48,9 @@ public class AccountEditDialogController {
     }
 
     /**
-     * Sets the person to be edited in the dialog.
+     * Sets the account to be edited in the dialog.
      * 
-     * @param person
+     * @param account
      */
     public void setAccount(Account account) {
         this.account = account;
@@ -83,13 +81,12 @@ public class AccountEditDialogController {
 		int i;
 		for(i = 0; i < pass.length; i++) {
 			generatedPass += (Byte.toString(pass[i]));
-			
 		}
-		
 		generatedPass = generatedPass.substring(0, 11);
 		
     	passwordField.setText(generatedPass);
     }
+    
     /**
      * Called when the user clicks ok.
      */

@@ -57,11 +57,9 @@ public class LoginController {
 
 		Password passAttempt = new Password(password.getText(), user.getPassSalt());	
 		User userAttempt = new User(username.getText(), passAttempt);
-		System.out.println(userAttempt.toString());
-		System.out.println(user.toString());
+
 		if(Arrays.equals(userAttempt.getPassHash(),(user.getPassHash()))
 				&& userAttempt.getUsername().equals(user.getUsername())) {
-			System.out.println("successful login");
 			user.setPassword(password.getText());
 			mainApp.thisUser = user;
 			File accountFile = new File(System.getProperty("user.home")+"/AikenVault/encryptedAccounts.txt/");
@@ -72,8 +70,6 @@ public class LoginController {
 			if (accountFile.exists()) {
 				mainApp.decryptAccountData();
 			}
-			//if user data exists, decrypt it with the password and salt into mem
-			// accounts and keys seperately
 			mainApp.showMain();
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);

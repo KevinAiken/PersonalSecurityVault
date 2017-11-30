@@ -6,8 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.AlgorithmParameters;
@@ -43,22 +42,25 @@ import vault.model.Account;
 import vault.model.AccountWrapper;
 import vault.model.Key;
 import vault.model.KeyWrapper;
-import vault.model.Password;
+
 import vault.model.User;
 import vault.view.AccountEditDialogController;
 import vault.view.AccountsController;
 import vault.view.CheckSumController;
+import vault.view.DecryptController;
+import vault.view.EncryptController;
 import vault.view.GenerateKeyDialogController;
+import vault.view.GenerateSignatureController;
 import vault.view.KeyEditDialogController;
 import vault.view.KeysController;
 import vault.view.LoginController;
 import vault.view.MainController;
 import vault.view.SetupController;
 import vault.view.ToolController;
+import vault.view.VerifySignatureController;
 
 public class MainApp extends Application {
 
-	private Boolean setup = false;
     private Stage primaryStage;
     private BorderPane rootLayout;
     public User thisUser;
@@ -148,12 +150,12 @@ public class MainApp extends Application {
     public void showAccountOverview() {
         try {
         	//generateInitialData();
-            // Load person overview.
+           
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/Accounts.fxml"));
             AnchorPane accounts = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
+           
             rootLayout.setCenter(accounts);
 
             // Give the controller access to the main app.
@@ -171,12 +173,12 @@ public class MainApp extends Application {
     public void showMain() {
         try {
         	//generateInitialData();
-            // Load person overview.
+         
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/Main.fxml"));
             AnchorPane main = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
+           
             rootLayout.setCenter(main);
 
             // Give the controller access to the main app.
@@ -226,7 +228,7 @@ public class MainApp extends Application {
     }
     
     /**
-     * Shows tools inside the root layout
+     * Shows checksum tool inside the root layout
      */
     public void showChecksum() {
     	try {
@@ -243,11 +245,69 @@ public class MainApp extends Application {
     	}
     }
     
+    public void showGenerateSignature() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader();
+    		loader.setLocation(MainApp.class.getResource("view/GenerateSig.fxml"));
+    		AnchorPane main = (AnchorPane) loader.load();
+    		
+    		rootLayout.setCenter(main);
+    		
+    		GenerateSignatureController controller = loader.getController();
+    		controller.setMainApp(this);
+    	} catch (IOException e) {
+    		System.out.println(e);
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void showEncrypt() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader();
+    		loader.setLocation(MainApp.class.getResource("view/CheckSum.fxml"));
+    		AnchorPane main = (AnchorPane) loader.load();
+    		
+    		rootLayout.setCenter(main);
+    		
+    		EncryptController controller = loader.getController();
+    		controller.setMainApp(this);
+    	} catch (IOException e) {
+    		System.out.println(e);
+    	}
+    }
+    
+    public void showDecrypt() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader();
+    		loader.setLocation(MainApp.class.getResource("view/Decrypt.fxml"));
+    		AnchorPane main = (AnchorPane) loader.load();
+    		
+    		rootLayout.setCenter(main);
+    		
+    		DecryptController controller = loader.getController();
+    		controller.setMainApp(this);
+    	} catch (IOException e) {
+    		System.out.println(e);
+    	}
+    }
+    
+    public void showVerifySignature() {
+    	try {
+    		FXMLLoader loader = new FXMLLoader();
+    		loader.setLocation(MainApp.class.getResource("view/VerifySignature.fxml"));
+    		AnchorPane main = (AnchorPane) loader.load();
+    		
+    		rootLayout.setCenter(main);
+    		
+    		VerifySignatureController controller = loader.getController();
+    		controller.setMainApp(this);
+    	} catch (IOException e) {
+    		System.out.println(e);
+    	}
+    }
     
 	/**
-	 * Saves the current person data to the specified file.
-	 * 
-	 * @param file
+	 * Saves the current user data to the specified file.
 	 */
 	public void saveUserDataToStream(File file, User user) {
 	    try {
@@ -275,9 +335,6 @@ public class MainApp extends Application {
 	private ObservableList<Account> accountData = FXCollections.observableArrayList();
 	private ObservableList<Key> keyData = FXCollections.observableArrayList();
 	
-	public void generateInitialData() {
-		keyData.add(new Key("my key", "421830210321", "this key unlocks things", "DES"));
-	}
 	
 	/**
      * Returns the data as an observable list of accounts.
@@ -311,7 +368,7 @@ public class MainApp extends Application {
         	Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             byte[] iv = Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/AikenVault/AccountIV.txt/"));
         	cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
-        	
+
         	FileInputStream fis = new FileInputStream(ciphertextFile);
         	CipherInputStream cis = new CipherInputStream(fis, cipher);
         	ByteArrayOutputStream fos = new ByteArrayOutputStream();
@@ -322,17 +379,20 @@ public class MainApp extends Application {
         	}
         	fos.close();
         	cis.close();
-        	
+
             JAXBContext context = JAXBContext
                     .newInstance(AccountWrapper.class);
             Unmarshaller um = context.createUnmarshaller();
             // Reading XML from the file and unmarshalling.
+  
             ByteArrayInputStream marshalledStream = new ByteArrayInputStream(fos.toByteArray());
             AccountWrapper wrapper = (AccountWrapper) um.unmarshal(marshalledStream);
             accountData.clear();
-            accountData.addAll(wrapper.getAccounts());
-          
-
+            //If you have accounts, delete all of them, then login 
+            // program will display an error notification without the following if 
+            if(wrapper.getAccounts() != null) {	
+            	accountData.addAll(wrapper.getAccounts());
+            }
         } catch (Exception e) { // catches ANY exception
         	System.out.println(e);
             Alert alert = new Alert(AlertType.ERROR);
@@ -399,12 +459,7 @@ public class MainApp extends Application {
         }
     }
     
-    /**
-     * Loads person data from the specified file. The current person data will
-     * be replaced.
-     * 
-     * @param file
-     */
+
     public void decryptKeyData() {
         try {
         	File ciphertextFile = new File(System.getProperty("user.home")+"/AikenVault/encryptedKeys.txt/");
@@ -434,9 +489,9 @@ public class MainApp extends Application {
             ByteArrayInputStream marshalledStream = new ByteArrayInputStream(fos.toByteArray());
             KeyWrapper wrapper = (KeyWrapper) um.unmarshal(marshalledStream);
             keyData.clear();
-            keyData.addAll(wrapper.getKeys());
-          
-
+            if(wrapper.getKeys() != null) {
+            	keyData.addAll(wrapper.getKeys());
+            }
         } catch (Exception e) { // catches ANY exception
         	System.out.println(e);
             Alert alert = new Alert(AlertType.ERROR);

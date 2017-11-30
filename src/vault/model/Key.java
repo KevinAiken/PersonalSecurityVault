@@ -1,11 +1,15 @@
 package vault.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
  * Model class for a key
  */
+@XmlRootElement
 public class Key {
 	private final StringProperty keyName;
 	private final StringProperty keyValue;
@@ -36,6 +40,7 @@ public class Key {
         return keyName.get();
     }
 
+	@XmlElement
     public void setKeyName(String keyName) {
         this.keyName.set(keyName);
     }
@@ -44,6 +49,7 @@ public class Key {
         return keyValue.get();
     }
 
+    @XmlElement
     public void setKeyValue(String keyValue) {
         this.keyValue.set(keyValue);
     }
@@ -52,6 +58,7 @@ public class Key {
         return keyNotes.get();
     }
 
+    @XmlElement
     public void setNotes(String keyNotes) {
         this.keyNotes.set(keyNotes);
     }
@@ -60,10 +67,12 @@ public class Key {
         return keyType.get();
     }
 
+    @XmlElement
     public void setKeyType(String keyType) {
         this.keyType.set(keyType);
     }
     
+    @XmlElement
     public void setKeyPairValue(String keyPair) {
     	this.keyPairValue.set(keyPair);
     }
@@ -72,6 +81,7 @@ public class Key {
     	return keyPairValue.get();
     }
     
+    @XmlElement
     public void setKeyLength(String keyLength) {
     	this.keyLength.set(keyLength);
     }

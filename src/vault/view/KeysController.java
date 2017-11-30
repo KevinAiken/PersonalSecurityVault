@@ -1,13 +1,21 @@
 package vault.view;
 
+import java.io.File;
+
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
 import javafx.scene.control.Alert.AlertType;
 import vault.MainApp;
-import vault.model.Account;
 import vault.model.Key;
 
 public class KeysController {
@@ -47,14 +55,12 @@ public class KeysController {
      */
     @FXML
     private void initialize() {
-        // Initialize the person table with the two columns.
         keyNameColumn.setCellValueFactory(cellData -> cellData.getValue().keyNameProperty());
         keyTypeColumn.setCellValueFactory(cellData -> cellData.getValue().keyTypeProperty());
         
-     // Clear person details.
+
         showKeyDetails(null);
 
-        // Listen for selection changes and show the person details when changed.
         keyTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showKeyDetails(newValue));
     }
@@ -72,15 +78,9 @@ public class KeysController {
         keyTable.setItems(mainApp.getKeyData());
     }
     
-    /**
-     * Fills all text fields to show details about the person.
-     * If the specified person is null, all text fields are cleared.
-     * 
-     * @param person the person or null
-     */
     private void showKeyDetails(Key key) {
         if (key != null) {
-            // Fill the labels with info from the person object.
+            // Fill the labels with info from the key object
             keyNameLabel.setText(key.getKeyName());
             keyTypeLabel.setText(key.getKeyType());
             keyValueLabel.setText(key.getKeyValue());
@@ -88,7 +88,7 @@ public class KeysController {
             notesLabel.setText(key.getNotes());
             lengthLabel.setText(key.getKeyLength());
         } else {
-            // account is null, remove all the text.
+            // key is null, remove all the text.
             keyNameLabel.setText("");
             keyTypeLabel.setText("");
             keyValueLabel.setText("");
@@ -125,7 +125,46 @@ public class KeysController {
     
     @FXML
     private void exportKey() {
-    	System.out.println("not implemented yet");
+    	FileChooser fileChooser = new FileChooser();
+        int selectedIndex = keyTable.getSelectionModel().getSelectedIndex();
+        
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml");
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage().getScene().getWindow());
+       
+        if(file != null){
+            try {
+        		JAXBContext jaxbContext = JAXBContext.newInstance(Key.class);
+        		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+        		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        		jaxbMarshaller.marshal(mainApp.getKeyData().get(selectedIndex), file);
+
+            } catch (JAXBException e) {
+        		e.printStackTrace();
+        	}
+        }
+    }
+    
+    private File fileToImport;
+    @FXML
+    private void importKey() {
+    	FileChooser chooser = new FileChooser();
+    	fileToImport = chooser.showOpenDialog(mainApp.getPrimaryStage().getScene().getWindow());
+    	try {
+    		JAXBContext jaxbContext = JAXBContext.newInstance(Key.class);
+
+    		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+    		Key key = (Key) jaxbUnmarshaller.unmarshal(fileToImport);
+    		mainApp.getKeyData().add(key);
+    		mainApp.encryptKeyData();
+    	  } catch (JAXBException e) {
+    		e.printStackTrace();
+    	  }
     }
     
     @FXML 

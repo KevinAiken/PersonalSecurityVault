@@ -3,11 +3,10 @@ package vault.view;
 import javafx.fxml.FXML;
 import vault.MainApp;
 
-public class EncryptController {
-	
+public class DecryptController {
 	private MainApp mainApp;
 	
-	public EncryptController() {
+	public DecryptController() {
 	}
 	
 	@FXML

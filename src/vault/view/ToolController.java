@@ -20,7 +20,7 @@ public class ToolController {
 	
 	@FXML
 	private void handleVerify() {
-		//mainApp.showVerifySignature();
+		mainApp.showVerifySignature();
 	}
 	
 	@FXML
@@ -31,11 +31,18 @@ public class ToolController {
 	@FXML
 	private void handleEncrypt() {
 		//mainApp.showEncrypt();
+		System.out.println("Not yet implemented");
+	}
+	
+	@FXML
+	private void handleDecrypt() {
+		//mainApp.showDecrypt();
+		System.out.println("not yet implemented");
 	}
 	
 	@FXML
 	private void handleGenerateSignature() {
-		//mainApp.showGenerateSignature();
+		mainApp.showGenerateSignature();
 	}
 	
 	@FXML

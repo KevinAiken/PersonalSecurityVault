@@ -6,6 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import vault.MainApp;
 import vault.model.Account;
 
@@ -26,7 +27,10 @@ public class AccountsController {
     private Label urlLabel;
     @FXML
     private Label notesLabel;
-
+    
+    @FXML
+    private TextField searchField;
+    
     // Reference to the main application.
     private MainApp mainApp;
 
@@ -68,14 +72,14 @@ public class AccountsController {
     }
     
     /**
-     * Fills all text fields to show details about the person.
-     * If the specified person is null, all text fields are cleared.
+     * Fills all text fields to show details about the account.
+     * If the specified account is null, all text fields are cleared.
      * 
-     * @param person the person or null
+     * @param account the account or null
      */
     private void showAccountDetails(Account account) {
         if (account != null) {
-            // Fill the labels with info from the person object.
+            // Fill the labels with info from the account object.
             accountNameLabel.setText(account.getAccountName());
             userIDLabel.setText(account.getUserID());
             passwordLabel.setText(account.getPass());
@@ -108,7 +112,7 @@ public class AccountsController {
     
     /**
      * Called when the user clicks the new button. Opens a dialog to edit
-     * details for a new person.
+     * details for a new account.
      */
     @FXML
     private void handleNew() {
@@ -123,7 +127,7 @@ public class AccountsController {
 
     /**
      * Called when the user clicks the edit button. Opens a dialog to edit
-     * details for the selected person.
+     * details for the selected account.
      */
     @FXML
     private void handleEdit() {
@@ -146,6 +150,29 @@ public class AccountsController {
 
             alert.showAndWait();
         }
+    }
+    
+    @FXML
+    private void handleSearch() {
+    	String searchAttempt = searchField.getText();
+    	boolean resultFound = false;
+    	int i;
+    	for(i = 0; i < mainApp.getAccountData().size(); i++) {
+    		if(mainApp.getAccountData().get(i).getAccountName().equals(searchAttempt)) {
+    			resultFound = true;
+    			showAccountDetails(mainApp.getAccountData().get(i));
+    			accountTable.getSelectionModel().select(mainApp.getAccountData().get(i));
+    		}
+    	}
+    	if(resultFound == false) {
+    		Alert alert = new Alert(AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("No Account");
+            alert.setHeaderText("No Account Found");
+            alert.setContentText("No account was found with that exact name");
+
+            alert.showAndWait();
+    	}
     }
     
 }

@@ -37,5 +37,6 @@
             <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
         </buttons>
       </ButtonBar>
+      <Label layoutX="32.0" layoutY="183.0" prefHeight="17.0" prefWidth="336.0" text="Note: Larger RSA keys can take up to 10 seconds to generate." AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" />
    </children>
 </AnchorPane>

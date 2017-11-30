@@ -1,14 +1,13 @@
 package vault.view;
 
 import java.security.KeyPair;
+
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +36,7 @@ public class GenerateKeyDialogController {
 	private void initialize() {
 		choices.addAll("DES", "3DES with 112-bit key",  
 				"AES with 128-bit key", "AES with 192-bit key", "AES with 256-bit key",
-				"1024-bit RSA key pair", "2048-bit RSA key pair", "4096-bit RSA Key pair");		
+				"1024-bit RSA key pair", "2048-bit RSA key pair", "4096-bit RSA key pair");		
 		keyChoice.setItems(choices);	
 		keyChoice.setValue("DES");
 	}
@@ -66,7 +65,7 @@ public class GenerateKeyDialogController {
 			KeyGenerator keyGen;
 			try {
 				keyGen = KeyGenerator.getInstance("DES");
-				keyGen.init(56); // for example
+				keyGen.init(56); 
 				secretKeyRaw = keyGen.generateKey();
 				String secretKey = Base64.getEncoder().encodeToString(secretKeyRaw.getEncoded());
 				key.setKeyType("DES");
@@ -81,7 +80,7 @@ public class GenerateKeyDialogController {
 			KeyGenerator keyGen;
 			try {
 				keyGen = KeyGenerator.getInstance("DESede");
-				keyGen.init(112); // for example
+				keyGen.init(112);
 				secretKeyRaw = keyGen.generateKey();
 				String secretKey = Base64.getEncoder().encodeToString(secretKeyRaw.getEncoded());
 				key.setKeyType("3DES");
@@ -96,7 +95,7 @@ public class GenerateKeyDialogController {
 			KeyGenerator keyGen;
 			try {
 				keyGen = KeyGenerator.getInstance("AES");
-				keyGen.init(128); // for example
+				keyGen.init(128); 
 				secretKeyRaw = keyGen.generateKey();
 				String secretKey = Base64.getEncoder().encodeToString(secretKeyRaw.getEncoded());
 				key.setKeyType("AES");
@@ -124,7 +123,7 @@ public class GenerateKeyDialogController {
 			KeyGenerator keyGen;
 			try {
 				keyGen = KeyGenerator.getInstance("AES");
-				keyGen.init(256); // for example
+				keyGen.init(256); 
 				secretKeyRaw = keyGen.generateKey();
 				String secretKey = Base64.getEncoder().encodeToString(secretKeyRaw.getEncoded());
 				key.setKeyType("AES");
@@ -140,14 +139,46 @@ public class GenerateKeyDialogController {
 				keyGen = KeyPairGenerator.getInstance("RSA");
 				keyGen.initialize(1024);
 				secretKeyPair = keyGen.genKeyPair();
+				
+				String secretKeyPrivate = Base64.getEncoder().encodeToString(secretKeyPair.getPrivate().getEncoded());
+				String secretKeyPublic = Base64.getEncoder().encodeToString(secretKeyPair.getPublic().getEncoded());
 				key.setKeyType("RSA");
-				key.setKeyValue(secretKeyPair.getPrivate().toString());
+				key.setKeyValue(secretKeyPrivate);
+				key.setKeyPairValue(secretKeyPublic);
 				key.setKeyLength("1024");
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 		} else if(keyChoice.getValue().equals("2048-bit RSA key pair")) {
+			KeyPairGenerator keyGen;
+			try {
+				keyGen = KeyPairGenerator.getInstance("RSA");
+				keyGen.initialize(2048);
+				secretKeyPair = keyGen.genKeyPair();
+				String secretKeyPrivate = Base64.getEncoder().encodeToString(secretKeyPair.getPrivate().getEncoded());
+				String secretKeyPublic = Base64.getEncoder().encodeToString(secretKeyPair.getPublic().getEncoded());
+				key.setKeyType("RSA");
+				key.setKeyValue(secretKeyPrivate);
+				key.setKeyPairValue(secretKeyPublic);
+				key.setKeyLength("2048");
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
 		} else if(keyChoice.getValue().equals("4096-bit RSA key pair")) {
+			KeyPairGenerator keyGen;
+			try {
+				keyGen = KeyPairGenerator.getInstance("RSA");
+				keyGen.initialize(4096);
+				secretKeyPair = keyGen.genKeyPair();
+				String secretKeyPrivate = Base64.getEncoder().encodeToString(secretKeyPair.getPrivate().getEncoded());
+				String secretKeyPublic = Base64.getEncoder().encodeToString(secretKeyPair.getPublic().getEncoded());
+				key.setKeyType("RSA");
+				key.setKeyValue(secretKeyPrivate);
+				key.setKeyPairValue(secretKeyPublic);
+				key.setKeyLength("4096");
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			}
 		}
 		okClicked = true;
 		dialogStage.close();

@@ -19,16 +19,19 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Button mnemonicParsing="false" onAction="#handleChecksum" prefWidth="200.0" text="Calculate Checksums" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#handleGenerateSignature" prefWidth="200.0" text="Generate Digital Signatures" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onAction="#handleEncrypt" prefWidth="200.0" text="Encrypt and Decrypt Files" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" onAction="#handleVerify" prefWidth="200.0" text="Verify Digital Signatures" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Button mnemonicParsing="false" onAction="#handleEncrypt" prefWidth="200.0" text="Encrypt Files" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#handleVerify" prefWidth="200.0" text="Verify Digital Signatures" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
             <Label text="Calculate the MD5 or SHA1 checksum of a file." GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             <Label text="Generate digital file signatures." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Label text="Encrypt and decrypt files using your saved keys. " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Label text="Verify the digital signature of a file." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Label text="Encrypt files using your saved keys. " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label text="Verify the digital signature of a file." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <Button mnemonicParsing="false" prefWidth="200.0" text="Decrypt Files" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Label text="Decrypt files using your saved keys." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <Button layoutX="645.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />

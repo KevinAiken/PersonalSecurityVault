@@ -78,12 +78,6 @@ public class SetupController {
 	        alert.showAndWait();
 		}
 		
-		mainApp.generateInitialData();
-		// encrypt initial accounts
-		// encrypt initial keys
-		// to encrypt: marshall to a stream
-		// run a stream cipher on it
-		// clear data from memory
 		mainApp.showLogin();
 	}
 	
